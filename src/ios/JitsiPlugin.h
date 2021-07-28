@@ -1,6 +1,5 @@
 #import <Cordova/CDVPlugin.h>
-#import "JitsiMeetViewDelegate.h"
-#import "JitsiMeetView.h"
+#import <JitsiMeetSDK/JitsiMeetSDK.h>
 
 @interface JitsiPlugin : CDVPlugin<JitsiMeetViewDelegate> {
 	JitsiMeetView* jitsiMeetView;

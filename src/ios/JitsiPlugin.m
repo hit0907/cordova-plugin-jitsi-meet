@@ -1,27 +1,23 @@
 #import "JitsiPlugin.h"
 
-
-
 @implementation JitsiPlugin
 
 CDVPluginResult *pluginResult = nil;
 
 - (void)loadURL:(CDVInvokedUrlCommand *)command {
     NSString* url = [command.arguments objectAtIndex:0];
-    NSString* key = [command.arguments objectAtIndex:1];
+    NSString* room = [command.arguments objectAtIndex:1];
     Boolean isInvisible = [[command.arguments objectAtIndex:2] boolValue];
     commandBack = command;
+    
     jitsiMeetView = [[JitsiMeetView alloc] initWithFrame:self.viewController.view.frame];
     jitsiMeetView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     jitsiMeetView.delegate = self;
-    jitsiMeetView.welcomePageEnabled = NO;
-    [jitsiMeetView loadURLObject:@{
-        @"config": @{
-            @"startWithAudioMuted": @NO,
-            @"startWithVideoMuted": @NO
-        },
-        @"url": url
+    JitsiMeetConferenceOptions *options = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {
+        builder.serverURL = [NSURL URLWithString:url];
+        builder.room = room;
     }];
+    [jitsiMeetView join:options];
     if (!isInvisible) {
        [self.viewController.view addSubview:jitsiMeetView];
     }
@@ -73,7 +69,7 @@ void _onJitsiMeetViewDelegateEvent(NSString *name, NSDictionary *data) {
     [self.commandDelegate sendPluginResult:pluginResult callbackId:commandBack.callbackId];
 }
 
-- (void)conferenceWillLeave:(NSDictionary *)data {
+- (void)conferenceTerminated:(NSDictionary *)data {
     _onJitsiMeetViewDelegateEvent(@"CONFERENCE_WILL_LEAVE", data);
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"CONFERENCE_WILL_LEAVE"];
     [pluginResult setKeepCallbackAsBool:YES];

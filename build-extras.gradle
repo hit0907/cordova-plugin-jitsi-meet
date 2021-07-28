@@ -1,10 +1,10 @@
 android {
-	compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+	compileSdkVersion 30
+    buildToolsVersion "30.0.3"
     
 	defaultConfig {
-		minSdkVersion 21
-		targetSdkVersion 26
+		minSdkVersion 22
+		targetSdkVersion 30
 		multiDexEnabled true
 	}
 	packagingOptions {
