@@ -42,7 +42,7 @@
 				<source url="https://github.com/CocoaPods/Specs.git"/>
 			</config>
 			<pods use-frameworks="true">
-				<pod name="JitsiMeetSDK" spec="3.7.0"/>
+				<pod name="JitsiMeetSDK"/>
 			</pods>
 		</podspec>
 	</platform>
